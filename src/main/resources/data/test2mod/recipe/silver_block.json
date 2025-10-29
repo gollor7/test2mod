@@ -1,0 +1,19 @@
+﻿{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "test2mod:silver_ingot",
+    "test2mod:silver_ingot",
+    "test2mod:silver_ingot",
+    "test2mod:silver_ingot",
+    "test2mod:silver_ingot",
+    "test2mod:silver_ingot",
+    "test2mod:silver_ingot",
+    "test2mod:silver_ingot",
+    "test2mod:silver_ingot"
+  ],
+  "result": {
+    "count": 1,
+    "id": "test2mod:silver_block"
+  }
+}

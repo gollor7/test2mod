@@ -1,0 +1,14 @@
+{
+  "itemGroup.test2mod": "Example Mod Tab",
+  "block.test2mod.silver_ore": "Silver ore",
+  "item.test2mod.swallow_potion": "Swallow potion",
+  "item.test2mod.raw_silver": "Raw silver",
+
+  "test2mod.configuration.title": "test2mod Configs",
+  "test2mod.configuration.section.test2mod.common.toml": "test2mod Configs",
+  "test2mod.configuration.section.test2mod.common.toml.title": "test2mod Configs",
+  "test2mod.configuration.items": "Item List",
+  "test2mod.configuration.logDirtBlock": "Log Dirt Block",
+  "test2mod.configuration.magicNumberIntroduction": "Magic Number Text",
+  "test2mod.configuration.magicNumber": "Magic Number"
+}

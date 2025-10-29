@@ -1,0 +1,10 @@
+﻿{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 180,
+  "experience": 2,
+  "ingredient": "test2mod:silver_ore",
+  "result": {
+    "id": "test2mod:silver_ingot"
+  }
+}

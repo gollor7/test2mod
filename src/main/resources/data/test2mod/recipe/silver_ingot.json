@@ -1,0 +1,11 @@
+﻿{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "test2mod:silver_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "test2mod:silver_ore"
+  }
+}

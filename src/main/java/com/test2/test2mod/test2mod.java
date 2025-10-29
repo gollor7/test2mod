@@ -1,21 +1,14 @@
 package com.test2.test2mod;
 
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.SoundType;
-import net.neoforged.neoforge.common.Tags;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -23,7 +16,6 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -58,7 +50,6 @@ public class test2mod {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
 
-
     // Creates a new Block with the id "test2mod:example_block", combining the namespace and path
     public static final DeferredBlock<Block> SILVER_ORE = BLOCKS.register(
             "silver_ore",
@@ -88,10 +79,10 @@ public class test2mod {
     public static final DeferredItem<Item> SWALLOW_POTION = ITEMS.registerSimpleItem("swallow_potion", new Item.Properties().component(DataComponents.CONSUMABLE, Consumable.builder()
             .consumeSeconds(0.5f)
             .hasConsumeParticles(false)
-                    .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.REGENERATION, 900)))
-                    .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.SPEED, 900)))
-                    .sound(SoundEvents.HONEY_DRINK)
-                    .soundAfterConsume(SoundEvents.BREEZE_WIND_CHARGE_BURST)
+            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.REGENERATION, 900)))
+            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.SPEED, 900)))
+            .sound(SoundEvents.HONEY_DRINK)
+            .soundAfterConsume(SoundEvents.BREEZE_WIND_CHARGE_BURST)
             .build()));
 
     public static final DeferredItem<Item> RAW_SILVER = ITEMS.registerSimpleItem("raw_silver");
@@ -160,4 +151,5 @@ public class test2mod {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
     }
+
 }

@@ -1,14 +1,19 @@
 package com.test2.test2mod;
 
+import com.test2.test2mod.Effects.IntoxicationEffect;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.level.block.SoundType;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -49,6 +54,13 @@ public class test2mod {
     // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "test2mod" namespace
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
+    public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MODID);
+
+
+    public static final DeferredHolder<MobEffect, IntoxicationEffect> INTOXICATION_EFFECT = MOB_EFFECTS.register("intoxication", () -> new IntoxicationEffect(
+            MobEffectCategory.HARMFUL,
+            0x80DB1D
+    ));
 
     // Creates a new Block with the id "test2mod:example_block", combining the namespace and path
     public static final DeferredBlock<Block> SILVER_ORE = BLOCKS.register(
@@ -112,6 +124,8 @@ public class test2mod {
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
 
+        MOB_EFFECTS.register(modEventBus);
+
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (test2mod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
@@ -152,4 +166,21 @@ public class test2mod {
         LOGGER.info("HELLO from server starting");
     }
 
+    @SubscribeEvent
+    public void onPotionAdded(MobEffectEvent.Added event) {
+        LivingEntity entity = event.getEntity();
+        MobEffectInstance currentIntoxication = entity.getEffect(INTOXICATION_EFFECT);
+
+        if (event.getEffectInstance().getEffect() != INTOXICATION_EFFECT) {
+            MobEffectInstance intoxication = new MobEffectInstance(
+                    INTOXICATION_EFFECT,
+                    currentIntoxication != null ? currentIntoxication.getDuration() + 100 : 100,
+                    currentIntoxication != null ? currentIntoxication.getAmplifier() + 1 : 0,
+                    false,
+                    true,
+                    true
+            );
+            entity.addEffect(intoxication);
+        }
+    }
 }

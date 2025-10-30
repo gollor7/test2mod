@@ -1,9 +1,11 @@
 {
   "itemGroup.test2mod": "Example Mod Tab",
   "block.test2mod.silver_ore": "Silver ore",
+  "block.test2mod.silver_block": "Silver block",
   "item.test2mod.swallow_potion": "Swallow potion",
   "item.test2mod.raw_silver": "Raw silver",
-
+  "item.test2mod.silver_ingot": "Silver ingot",
+  "effect.test2mod.intoxication": "Intoxication",
   "test2mod.configuration.title": "test2mod Configs",
   "test2mod.configuration.section.test2mod.common.toml": "test2mod Configs",
   "test2mod.configuration.section.test2mod.common.toml.title": "test2mod Configs",

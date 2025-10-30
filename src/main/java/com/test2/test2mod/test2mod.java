@@ -1,14 +1,26 @@
 package com.test2.test2mod;
 
+import com.test2.test2mod.Item.Silver_axe;
+import com.test2.test2mod.Item.Silver_hoe;
+import com.test2.test2mod.Item.Silver_shovel;
+import com.test2.test2mod.datagen.ModBlockTagsProvider;
+import com.test2.test2mod.datagen.ModItemTagsProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.level.block.SoundType;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -33,6 +45,9 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.concurrent.CompletableFuture;
+
+
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(test2mod.MODID)
 
@@ -48,6 +63,49 @@ public class test2mod {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
     // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "test2mod" namespace
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+
+
+    public static final TagKey<Item> INGOTS_SILVER = TagKey.create(Registries.ITEM,
+            ResourceLocation.fromNamespaceAndPath(test2mod.MODID, "ingots/silver"));
+
+    public void onGatherData(GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+        PackOutput packOutput = generator.getPackOutput();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+
+        ModBlockTagsProvider blockTagProvider = new ModBlockTagsProvider(packOutput, lookupProvider);
+        generator.addProvider(event.includeDev(), blockTagProvider);
+
+        generator.addProvider(event.includeDev(), new ModItemTagsProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter()));
+    }
+
+    public static final ToolMaterial SILVER_MATERIAL = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL,
+            200,
+            5f,
+            1.5f,
+            25,
+            INGOTS_SILVER);
+
+    public static final DeferredItem<Item> SILVER_SWORD = ITEMS.registerItem(
+            "silver_sword",
+            props -> new Item(
+                    props.sword(
+                            SILVER_MATERIAL,
+                            5.5f,
+                            -2.4f
+                    )));
+
+    public static final DeferredItem<Item> SILVER_AXE = ITEMS.registerItem("silver_axe", Silver_axe::new);
+
+
+    public static final DeferredItem<Item> SILVER_PICKAXE = ITEMS.registerItem("silver_pickaxe",
+            props -> new Item(props.pickaxe(SILVER_MATERIAL,
+                    3,
+                    -2.6f)));
+
+    public static final DeferredItem<Item> SILVER_SHOVEL = ITEMS.registerItem("silver_shovel", Silver_shovel::new);
+
+    public static final DeferredItem<Item> SILVER_HOE = ITEMS.registerItem("silver_hoe", Silver_hoe::new);
 
 
     // Creates a new Block with the id "test2mod:example_block", combining the namespace and path
@@ -96,7 +154,12 @@ public class test2mod {
             .displayItems((parameters, output) -> {
                 output.accept(SWALLOW_POTION.get());
                 output.accept(RAW_SILVER.get());
-                output.accept(SILVER_INGOT.get());// Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(SILVER_INGOT.get());
+                output.accept(SILVER_AXE.get());
+                output.accept(SILVER_HOE.get());
+                output.accept(SILVER_SHOVEL.get());
+                output.accept(SILVER_SWORD.get());
+                output.accept(SILVER_PICKAXE.get());// Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.

@@ -4,6 +4,7 @@ import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
+import org.jetbrains.annotations.NotNull;
 
 import static com.test2.test2mod.test2mod.SILVER_MATERIAL;
 
@@ -13,7 +14,7 @@ public class Silver_hoe extends HoeItem {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ItemAbility ability) {
+    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ItemAbility ability) {
         return ItemAbilities.DEFAULT_HOE_ACTIONS.contains(ability);
     }
 }

@@ -3,12 +3,7 @@ package com.test2.test2mod;
 import com.test2.test2mod.Item.Silver_axe;
 import com.test2.test2mod.Item.Silver_hoe;
 import com.test2.test2mod.Item.Silver_shovel;
-import com.test2.test2mod.datagen.ModBlockTagsProvider;
-import com.test2.test2mod.datagen.ModItemTagsProvider;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -20,7 +15,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.level.block.SoundType;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -45,7 +39,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.concurrent.CompletableFuture;
 
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
@@ -67,17 +60,6 @@ public class test2mod {
 
     public static final TagKey<Item> INGOTS_SILVER = TagKey.create(Registries.ITEM,
             ResourceLocation.fromNamespaceAndPath(test2mod.MODID, "ingots/silver"));
-
-    public void onGatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput packOutput = generator.getPackOutput();
-        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-
-        ModBlockTagsProvider blockTagProvider = new ModBlockTagsProvider(packOutput, lookupProvider);
-        generator.addProvider(event.includeDev(), blockTagProvider);
-
-        generator.addProvider(event.includeDev(), new ModItemTagsProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter()));
-    }
 
     public static final ToolMaterial SILVER_MATERIAL = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL,
             200,

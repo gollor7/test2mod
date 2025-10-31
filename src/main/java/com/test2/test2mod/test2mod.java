@@ -3,6 +3,7 @@ package com.test2.test2mod;
 import com.test2.test2mod.Item.Silver_axe;
 import com.test2.test2mod.Item.Silver_hoe;
 import com.test2.test2mod.Item.Silver_shovel;
+import com.test2.test2mod.armor.ModArmorMaterials;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +15,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
+import net.minecraft.world.item.equipment.ArmorMaterials;
+import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.level.block.SoundType;
 import org.slf4j.Logger;
 
@@ -39,6 +42,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import static net.minecraft.world.item.Items.registerItem;
 
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
@@ -88,6 +92,18 @@ public class test2mod {
     public static final DeferredItem<Item> SILVER_SHOVEL = ITEMS.registerItem("silver_shovel", Silver_shovel::new);
 
     public static final DeferredItem<Item> SILVER_HOE = ITEMS.registerItem("silver_hoe", Silver_hoe::new);
+
+    public static final DeferredItem<Item> WITCH_HELMET = ITEMS.registerItem("witch_helmet",
+            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.SILVER, ArmorType.HELMET)));
+
+    public static final DeferredItem<Item> WITCH_BOOTS = ITEMS.registerItem("witch_boots",
+            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.SILVER, ArmorType.BOOTS)));
+
+    public static final DeferredItem<Item> WITCH_CHESTPLATE = ITEMS.registerItem("witch_chestplate",
+            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.SILVER, ArmorType.CHESTPLATE)));
+
+    public static final DeferredItem<Item> WITCH_LEGGINGS = ITEMS.registerItem("witch_leggings",
+            properties -> new Item(properties.humanoidArmor(ModArmorMaterials.SILVER, ArmorType.LEGGINGS)));
 
 
     // Creates a new Block with the id "test2mod:example_block", combining the namespace and path
@@ -141,7 +157,12 @@ public class test2mod {
                 output.accept(SILVER_HOE.get());
                 output.accept(SILVER_SHOVEL.get());
                 output.accept(SILVER_SWORD.get());
-                output.accept(SILVER_PICKAXE.get());// Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(SILVER_PICKAXE.get());
+                output.accept(WITCH_HELMET.get());
+                output.accept(WITCH_BOOTS.get());
+                output.accept(WITCH_LEGGINGS.get());
+                output.accept(WITCH_CHESTPLATE.get());
+                // Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.

@@ -1,18 +1,18 @@
 package com.test2.test2mod;
 
 import com.test2.test2mod.Effects.IntoxicationEffect;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.Consumable;
-import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.SoundType;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import org.slf4j.Logger;
 
@@ -55,6 +55,7 @@ public class test2mod {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
     public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MODID);
+    public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(Registries.POTION, MODID);
 
 
     public static final DeferredHolder<MobEffect, IntoxicationEffect> INTOXICATION_EFFECT = MOB_EFFECTS.register("intoxication", () -> new IntoxicationEffect(
@@ -87,15 +88,11 @@ public class test2mod {
     public static final DeferredItem<BlockItem> SILVER_ORE_ITEM = ITEMS.registerSimpleBlockItem("silver_ore", SILVER_ORE);
     public static final DeferredItem<BlockItem> SILVER_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("silver_block", SILVER_BLOCK);
 
-    // Creates a new food item with the id "test2mod:example_id", nutrition 1 and saturation 2
-    public static final DeferredItem<Item> SWALLOW_POTION = ITEMS.registerSimpleItem("swallow_potion", new Item.Properties().component(DataComponents.CONSUMABLE, Consumable.builder()
-            .consumeSeconds(0.5f)
-            .hasConsumeParticles(false)
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.REGENERATION, 900)))
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.SPEED, 900)))
-            .sound(SoundEvents.HONEY_DRINK)
-            .soundAfterConsume(SoundEvents.BREEZE_WIND_CHARGE_BURST)
-            .build()));
+    public static final DeferredHolder<Potion, Potion> SWALLOW_POTION = POTIONS.register("swallow_potion", reg_name -> new Potion(
+            reg_name.getPath(),
+            new MobEffectInstance(MobEffects.STRENGTH, 900),
+            new MobEffectInstance(INTOXICATION_EFFECT, 900)
+    ));
 
     public static final DeferredItem<Item> RAW_SILVER = ITEMS.registerSimpleItem("raw_silver");
     public static final DeferredItem<Item> SILVER_INGOT = ITEMS.registerSimpleItem("silver_ingot");
@@ -104,9 +101,7 @@ public class test2mod {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.test2mod")) //The language key for the title of your CreativeModeTab
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> SWALLOW_POTION.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                output.accept(SWALLOW_POTION.get());
                 output.accept(RAW_SILVER.get());
                 output.accept(SILVER_INGOT.get());// Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
@@ -125,6 +120,8 @@ public class test2mod {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         MOB_EFFECTS.register(modEventBus);
+
+        POTIONS.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class (test2mod) to respond directly to events.
@@ -182,5 +179,15 @@ public class test2mod {
             );
             entity.addEffect(intoxication);
         }
+    }
+
+    @SubscribeEvent
+    public void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
+        PotionBrewing.Builder builder = event.getBuilder();
+        builder.addMix(
+                Potions.AWKWARD,
+                Items.FEATHER,
+                SWALLOW_POTION
+        );
     }
 }
